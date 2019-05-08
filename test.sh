@@ -12,9 +12,16 @@ INTERPRETER32="$TOP/binary/target/release/interpreter32"
 INTERPRETER64="$TOP/binary/target/release/interpreter64"
 ASM64="$TOP/binary/target/release/asm64"
 
-# Make sure we are using latest revision of CKB VM
-rm -rf ckb-vm
-git clone https://github.com/nervosnetwork/ckb-vm
+# If requested, make sure we are using latest revision of CKB VM
+if [ "$1" = "--update-ckb-vm" ]
+then
+    rm -rf ckb-vm
+fi
+
+if [ ! -d "$TOP/ckb-vm" ]
+then
+    git clone https://github.com/nervosnetwork/ckb-vm "$TOP/ckb-vm"
+fi
 
 # Build CKB VM binaries for testing
 cd "$TOP/binary"

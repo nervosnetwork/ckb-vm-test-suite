@@ -1,0 +1,21 @@
+[package]
+name = "binary"
+version = "0.1.0"
+authors = ["Nervos Core Dev <dev@nervos.org>"]
+edition = "2018"
+autobins = false
+
+[dependencies]
+ckb-vm = { path = "../ckb-vm", features = ["asm"] }
+
+[[bin]]
+name = "asm64"
+path = "src/asm64.rs"
+
+[[bin]]
+name = "interpreter64"
+path = "src/interpreter64.rs"
+
+[[bin]]
+name = "interpreter32"
+path = "src/interpreter32.rs"

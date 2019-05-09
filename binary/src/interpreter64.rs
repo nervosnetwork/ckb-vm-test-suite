@@ -1,3 +1,4 @@
+use bytes::Bytes;
 use ckb_vm::{run, SparseMemory};
 use std::env;
 use std::fs::File;
@@ -10,11 +11,12 @@ fn main() {
     let mut file = File::open(args[0].clone()).unwrap();
     let mut buffer = Vec::new();
     file.read_to_end(&mut buffer).unwrap();
-    let args: Vec<Vec<u8>> = args.into_iter().map(|a| a.into_bytes()).collect();
+    let buffer: Bytes = buffer.into();
+    let args: Vec<Bytes> = args.into_iter().map(|a| a.into()).collect();
 
     let result = run::<u64, SparseMemory<u64>>(&buffer, &args);
     if result != Ok(0) {
         println!("Error result: {:?}", result);
-        exit(i32::from(result.unwrap_or(255)));
+        exit(i32::from(result.unwrap_or(-1)));
     }
 }

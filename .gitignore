@@ -11,3 +11,4 @@ Cargo.lock
 
 /ckb-vm/
 /binary/target/
+/coverage/

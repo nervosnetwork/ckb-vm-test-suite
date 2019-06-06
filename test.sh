@@ -8,14 +8,12 @@ then
 fi
 
 TOP=`pwd`
-INTERPRETER32="$TOP/binary/target/release/interpreter32"
-INTERPRETER64="$TOP/binary/target/release/interpreter64"
-ASM64="$TOP/binary/target/release/asm64"
 
 # If requested, make sure we are using latest revision of CKB VM
 if [ "$1" = "--update-ckb-vm" ]
 then
     rm -rf ckb-vm
+    shift
 fi
 
 if [ ! -d "$TOP/ckb-vm" ]
@@ -23,9 +21,28 @@ then
     git clone https://github.com/nervosnetwork/ckb-vm "$TOP/ckb-vm"
 fi
 
-# Build CKB VM binaries for testing
-cd "$TOP/binary"
-cargo build --release
+if [ "$1" = "--coverage" ]
+then
+    INTERPRETER32="kcov $TOP/coverage $TOP/binary/target/debug/interpreter32"
+    INTERPRETER64="kcov $TOP/coverage $TOP/binary/target/debug/interpreter64"
+    ASM64="kcov $TOP/coverage $TOP/binary/target/debug/asm64"
+
+    rm -rf $TOP/coverage
+
+    # Build CKB VM binaries for testing
+    cd "$TOP/binary"
+    cargo build
+else
+    INTERPRETER32="$TOP/binary/target/release/interpreter32"
+    INTERPRETER64="$TOP/binary/target/release/interpreter64"
+    ASM64="$TOP/binary/target/release/asm64"
+
+    # Build CKB VM binaries for testing
+    cd "$TOP/binary"
+    cargo build --release
+fi
+
+
 
 # Build riscv-tests
 cd "$TOP/riscv-tests"
@@ -37,13 +54,13 @@ make isa
 # NOTE: let's stick with the simple way here since we know there won't be
 # whitespaces, otherwise shell might not be a good option here.
 for i in $(find . -regex ".*/rv32u[imc]-u-[a-z0-9_]+" | grep -v "fence_i"); do
-    "$INTERPRETER32" $i
+    $INTERPRETER32 $i
 done
 for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]+" | grep -v "fence_i"); do
-    "$INTERPRETER64" $i
+    $INTERPRETER64 $i
 done
 for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]+" | grep -v "fence_i"); do
-    "$ASM64" $i
+    $ASM64 $i
 done
 
 # Test CKB VM with riscv-compliance

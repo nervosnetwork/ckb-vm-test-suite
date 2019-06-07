@@ -1,4 +1,7 @@
 # ckb-vm-test-suite
+
+[![Build Status](https://dev.azure.com/nervosnetwork/ckb-vm-test-suite/_apis/build/status/nervosnetwork.ckb-vm-test-suite?branchName=master)](https://dev.azure.com/nervosnetwork/ckb-vm-test-suite/_build/latest?definitionId=6&branchName=master)
+
 Test suite for CKB VM, kept in a separate project to avoid polluting the vm repo with submodules
 
 # How to run this

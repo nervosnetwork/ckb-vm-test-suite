@@ -8,7 +8,9 @@ then
 fi
 PATH=$PATH:$RISCV/bin
 
-TOP=`pwd`
+# Inspired from https://stackoverflow.com/a/246128
+TOP="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $TOP
 
 # If requested, make sure we are using latest revision of CKB VM
 if [ "$1" = "--update-ckb-vm" ]

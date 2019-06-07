@@ -1,0 +1,35 @@
+jobs:
+  - job: TestSuite
+    steps:
+      - script: git submodule update --init --recursive
+        displayName: Update git submodules
+      - script: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake autotools-dev libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev
+        displayName: Install RISC-V dependencies
+      - script: docker run --rm -v `pwd`:/code xxuejie/riscv-gnu-toolchain-rv64imac:xenial-20190606 cp -r /riscv /code/
+        displayName: Extract RISC-V GNU toolchain files
+      - script: RISCV=`pwd`/riscv ./test.sh --update-ckb-vm
+        displayName: Test Suite
+  - job: Coverage
+    steps:
+      - script: git submodule update --init --recursive
+        displayName: Update git submodules
+      - script: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake autotools-dev libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake
+        displayName: Install RISC-V and kcov dependencies
+      - script: |
+          git clone https://github.com/SimonKagstrom/kcov
+          mkdir -p kcov/build
+          cd kcov/build
+          cmake ..
+          make
+          sudo make install
+          cd ../..
+          kcov --version
+        displayName: Install kcov
+      - script: docker run --rm -v `pwd`:/code xxuejie/riscv-gnu-toolchain-rv64imac:xenial-20190606 cp -r /riscv /code/
+        displayName: Extract RISC-V GNU toolchain files
+      - script: RISCV=`pwd`/riscv ./test.sh --update-ckb-vm --coverage
+        displayName: Coverage

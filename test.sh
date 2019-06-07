@@ -6,6 +6,7 @@ then
   echo "Please set the RISCV environment variable to your installed path."
   exit 1
 fi
+PATH=$PATH:$RISCV/bin
 
 TOP=`pwd`
 

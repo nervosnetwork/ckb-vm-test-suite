@@ -10,6 +10,10 @@ bytes = "0.4.12"
 ckb-vm = { path = "../ckb-vm", features = ["asm"] }
 
 [[bin]]
+name = "aot64"
+path = "src/aot64.rs"
+
+[[bin]]
 name = "asm64"
 path = "src/asm64.rs"
 

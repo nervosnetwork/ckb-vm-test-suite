@@ -18,18 +18,6 @@ name = "asm64"
 path = "src/asm64.rs"
 
 [[bin]]
-name = "asm64_step"
-path = "src/asm64_step.rs"
-
-[[bin]]
-name = "aot64_compile"
-path = "src/aot64_compile.rs"
-
-[[bin]]
-name = "asm64_200"
-path = "src/asm64_200.rs"
-
-[[bin]]
 name = "interpreter64"
 path = "src/interpreter64.rs"
 

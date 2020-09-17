@@ -1,5 +1,8 @@
 use bytes::Bytes;
-use ckb_vm::machine::{aot::AotCompilingMachine, asm::AsmMachine, VERSION1};
+use ckb_vm::{
+    machine::{aot::AotCompilingMachine, asm::AsmMachine, VERSION1},
+    ISA_IMAC,
+};
 use std::env;
 use std::fs::File;
 use std::io::Read;
@@ -14,7 +17,8 @@ fn main() {
     let buffer: Bytes = buffer.into();
     let args: Vec<Bytes> = args.into_iter().map(|a| a.into()).collect();
 
-    let mut aot_machine = AotCompilingMachine::load(&buffer.clone(), None, VERSION1).unwrap();
+    let mut aot_machine =
+        AotCompilingMachine::load(&buffer.clone(), None, ISA_IMAC, VERSION1).unwrap();
     let result = aot_machine.compile().unwrap();
 
     let mut machine = AsmMachine::default_with_aot_code(&result);

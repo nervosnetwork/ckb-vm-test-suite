@@ -1,7 +1,10 @@
 use bytes::Bytes;
-use ckb_vm::machine::{
-    asm::{AsmCoreMachine, AsmMachine},
-    DefaultMachineBuilder, VERSION1,
+use ckb_vm::{
+    machine::{
+        asm::{AsmCoreMachine, AsmMachine},
+        DefaultMachineBuilder, VERSION1,
+    },
+    ISA_IMAC,
 };
 use std::env;
 use std::fs::File;
@@ -17,7 +20,7 @@ fn main() {
     let buffer: Bytes = buffer.into();
     let args: Vec<Bytes> = args.into_iter().map(|a| a.into()).collect();
 
-    let asm_core = AsmCoreMachine::new(VERSION1, u64::max_value());
+    let asm_core = AsmCoreMachine::new(ISA_IMAC, VERSION1, u64::max_value());
     let core = DefaultMachineBuilder::<Box<AsmCoreMachine>>::new(asm_core).build();
     let mut machine = AsmMachine::new(core, None);
     machine.load_program(&buffer, &args).unwrap();

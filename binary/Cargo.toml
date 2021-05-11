@@ -6,7 +6,6 @@ edition = "2018"
 autobins = false
 
 [dependencies]
-bytes = "1"
 ckb-vm = { path = "../ckb-vm", features = ["asm"] }
 
 [[bin]]

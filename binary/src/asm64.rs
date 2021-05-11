@@ -1,5 +1,4 @@
-use bytes::Bytes;
-use ckb_vm::machine::asm::AsmMachine;
+use ckb_vm::{machine::asm::AsmMachine, Bytes};
 use std::env;
 use std::fs::File;
 use std::io::Read;

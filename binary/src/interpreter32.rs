@@ -1,5 +1,4 @@
-use bytes::Bytes;
-use ckb_vm::{run, SparseMemory};
+use ckb_vm::{run, Bytes, SparseMemory};
 use std::env;
 use std::fs::File;
 use std::io::Read;

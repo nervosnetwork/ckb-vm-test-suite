@@ -1,7 +1,6 @@
-use bytes::Bytes;
 use ckb_vm::{
     machine::{aot::AotCompilingMachine, asm::AsmMachine, VERSION0},
-    ISA_IMC,
+    Bytes, ISA_IMC,
 };
 use std::env;
 use std::fs::File;

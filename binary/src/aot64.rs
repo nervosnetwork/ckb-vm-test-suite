@@ -1,6 +1,7 @@
 use ckb_vm::{
     machine::{
-        asm::{AsmCoreMachine, AsmMachine, AsmWrapMachine},
+        aot::AotCompilingMachine,
+        asm::{AsmCoreMachine, AsmMachine},
         DefaultMachineBuilder, VERSION0,
     },
     Bytes, ISA_IMC,
@@ -13,10 +14,11 @@ fn main() {
     let code = std::fs::read(args[0].clone()).unwrap().into();
     let args: Vec<Bytes> = args.into_iter().map(|a| a.into()).collect();
 
+    let mut aot_machine = AotCompilingMachine::load(&code, None, ISA_IMC, VERSION0).unwrap();
+    let aot_code = aot_machine.compile().unwrap();
     let asm_core = AsmCoreMachine::new(ISA_IMC, VERSION0, u64::max_value());
-    let asm_wrap = AsmWrapMachine::new(asm_core, true);
-    let core = DefaultMachineBuilder::new(asm_wrap).build();
-    let mut machine = AsmMachine::new(core);
+    let core = DefaultMachineBuilder::new(asm_core).build();
+    let mut machine = AsmMachine::new(core, Some(&aot_code));
     machine.load_program(&code, &args).unwrap();
     let result = machine.run();
 

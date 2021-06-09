@@ -1,6 +1,6 @@
 use ckb_vm::{
     machine::{
-        asm::{AsmCoreMachine, AsmMachine, AsmWrapMachine},
+        asm::{AsmCoreMachine, AsmMachine},
         DefaultMachineBuilder, VERSION0,
     },
     Bytes, ISA_IMC,
@@ -14,9 +14,8 @@ fn main() {
     let args: Vec<Bytes> = args.into_iter().map(|a| a.into()).collect();
 
     let asm_core = AsmCoreMachine::new(ISA_IMC, VERSION0, u64::max_value());
-    let asm_wrap = AsmWrapMachine::new(asm_core, false);
-    let core = DefaultMachineBuilder::new(asm_wrap).build();
-    let mut machine = AsmMachine::new(core);
+    let core = DefaultMachineBuilder::new(asm_core).build();
+    let mut machine = AsmMachine::new(core, None);
     machine.load_program(&code, &args).unwrap();
     let result = machine.run();
     if result != Ok(0) {

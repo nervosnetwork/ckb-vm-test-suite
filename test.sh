@@ -83,22 +83,34 @@ done
 
 # Test CKB VM with riscv-compliance
 cd "$TOP/riscv-compliance"
-make clean
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32i TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32im TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32imc TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32uc TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32ui TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$INTERPRETER64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$INTERPRETER64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$ASM64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$ASM64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$AOT64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$AOT64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$ASM64_VERSION1" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$ASM64_VERSION1" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$AOT64_VERSION1" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$AOT64_VERSION1" simulate
+
+# TODO: more targets
+rm -rf work
+make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$INTERPRETER64" simulate
+rm -rf work
+make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$ASM64" simulate
+rm -rf work
+make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$AOT64" simulate
+rm -rf work
+make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$ASM64_VERSION1" simulate
+rm -rf work
+make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$AOT64_VERSION1" simulate
+
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv32i TARGET_SIM="$INTERPRETER32" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv32im TARGET_SIM="$INTERPRETER32" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv32imc TARGET_SIM="$INTERPRETER32" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv32uc TARGET_SIM="$INTERPRETER32" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv32ui TARGET_SIM="$INTERPRETER32" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$INTERPRETER64" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$INTERPRETER64" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$ASM64" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$ASM64" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$AOT64" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$AOT64" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$ASM64_VERSION1" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$ASM64_VERSION1" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$AOT64_VERSION1" simulate
+# make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$AOT64_VERSION1" simulate
 
 # Even though ckb-vm-bench-scripts are mainly used for benchmarks, they also
 # contains sophisticated scripts which make good tests

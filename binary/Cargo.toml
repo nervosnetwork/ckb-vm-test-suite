@@ -17,14 +17,6 @@ name = "asm64"
 path = "src/asm64.rs"
 
 [[bin]]
-name = "aot64_version1"
-path = "src/aot64_version1.rs"
-
-[[bin]]
-name = "asm64_version1"
-path = "src/asm64_version1.rs"
-
-[[bin]]
 name = "interpreter64"
 path = "src/interpreter64.rs"
 

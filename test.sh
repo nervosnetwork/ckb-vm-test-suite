@@ -30,8 +30,6 @@ then
     INTERPRETER64="kcov $TOP/coverage $TOP/binary/target/debug/interpreter64"
     ASM64="kcov $TOP/coverage $TOP/binary/target/debug/asm64"
     AOT64="kcov $TOP/coverage $TOP/binary/target/debug/aot64"
-    ASM64_VERSION1="kcov $TOP/coverage $TOP/binary/target/debug/asm64_version1"
-    AOT64_VERSION1="kcov $TOP/coverage $TOP/binary/target/debug/aot64_version1"
 
     rm -rf $TOP/coverage
 
@@ -43,8 +41,6 @@ else
     INTERPRETER64="$TOP/binary/target/release/interpreter64"
     ASM64="$TOP/binary/target/release/asm64"
     AOT64="$TOP/binary/target/release/aot64"
-    ASM64_VERSION1="$TOP/binary/target/release/asm64_version1"
-    AOT64_VERSION1="$TOP/binary/target/release/aot64_version1"
 
     # Build CKB VM binaries for testing
     cd "$TOP/binary"
@@ -74,31 +70,20 @@ done
 for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]*" | grep -v "fence_i" | grep -v "rv64ui-u-jalr"); do
     $AOT64 $i
 done
-for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]*" | grep -v "fence_i"); do
-    $ASM64_VERSION1 $i
-done
-for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]*" | grep -v "fence_i"); do
-    $AOT64_VERSION1 $i
-done
 
 # Test CKB VM with riscv-compliance
 cd "$TOP/riscv-compliance"
-make clean
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32i TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32im TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32imc TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32uc TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv32ui TARGET_SIM="$INTERPRETER32" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$INTERPRETER64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$INTERPRETER64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$ASM64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$ASM64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$AOT64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$AOT64" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$ASM64_VERSION1" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$ASM64_VERSION1" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64i TARGET_SIM="$AOT64_VERSION1" simulate
-make RISCV_TARGET=ckb-vm RISCV_ISA=rv64im TARGET_SIM="$AOT64_VERSION1" simulate
+
+# TODO: more targets
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$INTERPRETER64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$INTERPRETER64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$INTERPRETER64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$ASM64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$ASM64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$ASM64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$AOT64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$AOT64" simulate
+rm -rf work && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$AOT64" simulate
 
 # Even though ckb-vm-bench-scripts are mainly used for benchmarks, they also
 # contains sophisticated scripts which make good tests
@@ -107,13 +92,9 @@ make
 $INTERPRETER64 build/secp256k1_bench 033f8cf9c4d51a33206a6c1c6b27d2cc5129daa19dbd1fc148d395284f6b26411f 304402203679d909f43f073c7c1dcf8468a485090589079ee834e6eed92fea9b09b06a2402201e46f1075afa18f306715e7db87493e7b7e779569aa13c64ab3d09980b3560a3 foo bar
 $ASM64 build/secp256k1_bench 033f8cf9c4d51a33206a6c1c6b27d2cc5129daa19dbd1fc148d395284f6b26411f 304402203679d909f43f073c7c1dcf8468a485090589079ee834e6eed92fea9b09b06a2402201e46f1075afa18f306715e7db87493e7b7e779569aa13c64ab3d09980b3560a3 foo bar
 $AOT64 build/secp256k1_bench 033f8cf9c4d51a33206a6c1c6b27d2cc5129daa19dbd1fc148d395284f6b26411f 304402203679d909f43f073c7c1dcf8468a485090589079ee834e6eed92fea9b09b06a2402201e46f1075afa18f306715e7db87493e7b7e779569aa13c64ab3d09980b3560a3 foo bar
-$ASM64_VERSION1 build/secp256k1_bench 033f8cf9c4d51a33206a6c1c6b27d2cc5129daa19dbd1fc148d395284f6b26411f 304402203679d909f43f073c7c1dcf8468a485090589079ee834e6eed92fea9b09b06a2402201e46f1075afa18f306715e7db87493e7b7e779569aa13c64ab3d09980b3560a3 foo bar
-$AOT64_VERSION1 build/secp256k1_bench 033f8cf9c4d51a33206a6c1c6b27d2cc5129daa19dbd1fc148d395284f6b26411f 304402203679d909f43f073c7c1dcf8468a485090589079ee834e6eed92fea9b09b06a2402201e46f1075afa18f306715e7db87493e7b7e779569aa13c64ab3d09980b3560a3 foo bar
 
 $INTERPRETER64 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
 $ASM64 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
 $AOT64 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
-$ASM64_VERSION1 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
-$AOT64_VERSION1 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
 
 echo "All tests are passed!"

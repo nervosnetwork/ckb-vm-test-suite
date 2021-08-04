@@ -26,10 +26,10 @@ fi
 
 if [ "$1" = "--coverage" ]
 then
-    INTERPRETER32="kcov $TOP/coverage $TOP/binary/target/debug/interpreter32"
-    INTERPRETER64="kcov $TOP/coverage $TOP/binary/target/debug/interpreter64"
-    ASM64="kcov $TOP/coverage $TOP/binary/target/debug/asm64"
-    AOT64="kcov $TOP/coverage $TOP/binary/target/debug/aot64"
+    INTERPRETER32="kcov --verify $TOP/coverage $TOP/binary/target/debug/interpreter32"
+    INTERPRETER64="kcov --verify $TOP/coverage $TOP/binary/target/debug/interpreter64"
+    ASM64="kcov --verify $TOP/coverage $TOP/binary/target/debug/asm64"
+    AOT64="kcov --verify $TOP/coverage $TOP/binary/target/debug/aot64"
 
     rm -rf $TOP/coverage
 

@@ -5,12 +5,16 @@ authors = ["Nervos Core Dev <dev@nervos.org>"]
 edition = "2018"
 autobins = false
 
+[features]
+aot = ["ckb-vm/aot"]
+
 [dependencies]
 ckb-vm = { path = "../ckb-vm", features = ["aot"] }
 
 [[bin]]
 name = "aot64"
 path = "src/aot64.rs"
+required-features = ["aot"]
 
 [[bin]]
 name = "asm64"

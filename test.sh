@@ -12,6 +12,15 @@ PATH=$PATH:$RISCV/bin
 TOP="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $TOP
 
+# Prebuilt prefix allows us to do cross-compile outside of the target environment, saving time in qemu setup.
+if [ "$1" = "--prebuilt-prefix" ]
+then
+  shift
+  PREBUILT_PREFIX="$1"
+  shift
+fi
+
+# AOT is now disabled by default, enabled by this flag
 if [ "$1" = "--enable-aot" ]
 then
     BUILD_OPTIONS="--features=aot"
@@ -36,33 +45,39 @@ fi
 
 if [ "$1" = "--coverage" ]
 then
-    INTERPRETER32="kcov --verify $TOP/coverage $TOP/binary/target/debug/interpreter32"
-    INTERPRETER64="kcov --verify $TOP/coverage $TOP/binary/target/debug/interpreter64"
-    ASM64="kcov --verify $TOP/coverage $TOP/binary/target/debug/asm64"
+    INTERPRETER32="kcov --verify $TOP/coverage $TOP/binary/target/$PREBUILT_PREFIX/debug/interpreter32"
+    INTERPRETER64="kcov --verify $TOP/coverage $TOP/binary/target/$PREBUILT_PREFIX/debug/interpreter64"
+    ASM64="kcov --verify $TOP/coverage $TOP/binary/target/$PREBUILT_PREFIX/debug/asm64"
 
     if [ "$AOT" -eq "1" ]
     then
-        AOT64="kcov --verify $TOP/coverage $TOP/binary/target/debug/aot64"
+        AOT64="kcov --verify $TOP/coverage $TOP/binary/target/$PREBUILT_PREFIX/debug/aot64"
     fi
 
     rm -rf $TOP/coverage
 
-    # Build CKB VM binaries for testing
-    cd "$TOP/binary"
-    cargo build $BUILD_OPTIONS
+    if [ "x$PREBUILT_PREFIX" = "x" ]
+    then
+        # Build CKB VM binaries for testing
+        cd "$TOP/binary"
+        cargo build $BUILD_OPTIONS
+    fi
 else
-    INTERPRETER32="$TOP/binary/target/release/interpreter32"
-    INTERPRETER64="$TOP/binary/target/release/interpreter64"
-    ASM64="$TOP/binary/target/release/asm64"
+    INTERPRETER32="$TOP/binary/target/$PREBUILT_PREFIX/release/interpreter32"
+    INTERPRETER64="$TOP/binary/target/$PREBUILT_PREFIX/release/interpreter64"
+    ASM64="$TOP/binary/target/$PREBUILT_PREFIX/release/asm64"
 
     if [ "$AOT" -eq "1" ]
     then
-        AOT64="$TOP/binary/target/release/aot64"
+        AOT64="$TOP/binary/target/$PREBUILT_PREFIX/release/aot64"
     fi
 
-    # Build CKB VM binaries for testing
-    cd "$TOP/binary"
-    cargo build --release $BUILD_OPTIONS
+    if [ "x$PREBUILT_PREFIX" = "x" ]
+    then
+        # Build CKB VM binaries for testing
+        cd "$TOP/binary"
+        cargo build --release $BUILD_OPTIONS
+    fi
 fi
 
 

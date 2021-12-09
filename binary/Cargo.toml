@@ -9,7 +9,7 @@ autobins = false
 aot = ["ckb-vm/aot"]
 
 [dependencies]
-ckb-vm = { path = "../ckb-vm", features = ["aot"] }
+ckb-vm = { path = "../ckb-vm" }
 
 [[bin]]
 name = "aot64"

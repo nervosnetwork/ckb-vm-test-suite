@@ -8,6 +8,7 @@ use ckb_vm::{
 };
 use std::env;
 use std::process::exit;
+use std::sync::Arc;
 
 fn main() {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -18,7 +19,7 @@ fn main() {
     let aot_code = aot_machine.compile().unwrap();
     let asm_core = AsmCoreMachine::new(ISA_IMC, VERSION1, u64::max_value());
     let core = DefaultMachineBuilder::new(asm_core).build();
-    let mut machine = AsmMachine::new(core, Some(&aot_code));
+    let mut machine = AsmMachine::new(core, Some(Arc::new(aot_code)));
     machine.load_program(&code, &args).unwrap();
     let result = machine.run();
 

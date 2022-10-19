@@ -27,17 +27,6 @@ then
   shift
 fi
 
-# AOT is now disabled by default, enabled by this flag
-if [ "$1" = "--enable-aot" ]
-then
-    BUILD_OPTIONS="--features=aot"
-    AOT=1
-    shift
-else
-    BUILD_OPTIONS=""
-    AOT=0
-fi
-
 # If requested, make sure we are using latest revision of CKB VM
 if [ "$1" = "--update-ckb-vm" ]
 then
@@ -58,11 +47,6 @@ then
     INTERPRETER64="kcov --verify $TOP/coverage $TOP/binary/target/$PREBUILT_PREFIX/debug/interpreter64"
     ASM64="kcov --verify $TOP/coverage $TOP/binary/target/$PREBUILT_PREFIX/debug/asm64"
 
-    if [ "$AOT" -eq "1" ]
-    then
-        AOT64="kcov --verify $TOP/coverage $TOP/binary/target/$PREBUILT_PREFIX/debug/aot64"
-    fi
-
     rm -rf $TOP/coverage
 
     if [ "x$PREBUILT_PREFIX" = "x" ]
@@ -75,11 +59,6 @@ else
     INTERPRETER32="$TOP/binary/target/$PREBUILT_PREFIX/release/interpreter32"
     INTERPRETER64="$TOP/binary/target/$PREBUILT_PREFIX/release/interpreter64"
     ASM64="$TOP/binary/target/$PREBUILT_PREFIX/release/asm64"
-
-    if [ "$AOT" -eq "1" ]
-    then
-        AOT64="$TOP/binary/target/$PREBUILT_PREFIX/release/aot64"
-    fi
 
     if [ "x$PREBUILT_PREFIX" = "x" ]
     then
@@ -110,13 +89,6 @@ then
     for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]*" | grep -v "fence_i" | grep -v "rv64ui-u-jalr"); do
         $ASM64 $i
     done
-
-    if [ "$AOT" -eq "1" ]
-    then
-        for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]*" | grep -v "fence_i" | grep -v "rv64ui-u-jalr"); do
-            $AOT64 $i
-        done
-    fi
 fi
 
 # Test CKB VM with riscv-compliance
@@ -138,13 +110,6 @@ find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$ASM64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$ASM64" $COMPLIANCE_TARGET
 
-if [ "$AOT" -eq "1" ]
-then
-    find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$AOT64" $COMPLIANCE_TARGET
-    find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$AOT64" $COMPLIANCE_TARGET
-    find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$AOT64" $COMPLIANCE_TARGET
-fi
-
 # Even though ckb-vm-bench-scripts are mainly used for benchmarks, they also
 # contains sophisticated scripts which make good tests
 cd "$TOP/ckb-vm-bench-scripts"
@@ -157,12 +122,6 @@ then
 
     $INTERPRETER64 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
     $ASM64 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
-
-    if [ "$AOT" -eq "1" ]
-    then
-        $AOT64 build/secp256k1_bench 033f8cf9c4d51a33206a6c1c6b27d2cc5129daa19dbd1fc148d395284f6b26411f 304402203679d909f43f073c7c1dcf8468a485090589079ee834e6eed92fea9b09b06a2402201e46f1075afa18f306715e7db87493e7b7e779569aa13c64ab3d09980b3560a3 foo bar
-        $AOT64 build/schnorr_bench 4103c5b538d6f695a961e916e7308211c8c917e1e02ca28a21b0989596a9ffb6 e45408b5981ec7fd6e72faa161776fe5db17dd92226d1ad784816fb843e151127d9ccb615f364f317a35e2ddddc91bbf30ad103ddfd3ad7e839f508dbfe6298a foo bar
-    fi
 fi
 
 echo "All tests are passed!"

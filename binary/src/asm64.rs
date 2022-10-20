@@ -15,7 +15,7 @@ fn main() {
 
     let asm_core = AsmCoreMachine::new(ISA_IMC, VERSION1, u64::max_value());
     let core = DefaultMachineBuilder::new(asm_core).build();
-    let mut machine = AsmMachine::new(core, None);
+    let mut machine = AsmMachine::new(core);
     machine.load_program(&code, &args).unwrap();
     let result = machine.run();
     if result != Ok(0) {

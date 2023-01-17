@@ -3,7 +3,7 @@ use ckb_vm::{
         asm::{AsmCoreMachine, AsmMachine},
         DefaultMachineBuilder, VERSION1,
     },
-    Bytes, ISA_IMC, RISCV_MAX_MEMORY,
+    Bytes, ISA_IMC,
 };
 use std::env;
 use std::process::exit;
@@ -13,7 +13,7 @@ fn main() {
     let code = std::fs::read(args[0].clone()).unwrap().into();
     let args: Vec<Bytes> = args.into_iter().map(|a| a.into()).collect();
 
-    let asm_core = AsmCoreMachine::new(ISA_IMC, VERSION1, u64::max_value(), RISCV_MAX_MEMORY);
+    let asm_core = AsmCoreMachine::new(ISA_IMC, VERSION1, u64::max_value());
     let core = DefaultMachineBuilder::new(asm_core).build();
     let mut machine = AsmMachine::new(core);
     machine.load_program(&code, &args).unwrap();

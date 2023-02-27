@@ -80,13 +80,13 @@ then
     # Test CKB VM with riscv-tests
     # NOTE: let's stick with the simple way here since we know there won't be
     # whitespaces, otherwise shell might not be a good option here.
-    for i in $(find . -regex ".*/rv32u[imc]-u-[a-z0-9_]*" | grep -v "fence_i"); do
+    for i in $(find . -regex ".*/rv32u[imac]-u-[a-z0-9_]*" | grep -v "fence_i"); do
         $INTERPRETER32 $i
     done
-    for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]*" | grep -v "fence_i"); do
+    for i in $(find . -regex ".*/rv64u[imac]-u-[a-z0-9_]*" | grep -v "fence_i"); do
         $INTERPRETER64 $i
     done
-    for i in $(find . -regex ".*/rv64u[imc]-u-[a-z0-9_]*" | grep -v "fence_i" | grep -v "rv64ui-u-jalr"); do
+    for i in $(find . -regex ".*/rv64u[imac]-u-[a-z0-9_]*" | grep -v "fence_i" | grep -v "rv64ui-u-jalr"); do
         $ASM64 $i
     done
 fi

@@ -104,9 +104,6 @@ fi
 # TODO: more targets
 mkdir -p work
 
-echo --------
-echo make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET
-echo --------
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET

@@ -4,3 +4,6 @@
 [submodule "ckb-vm-bench-scripts"]
 	path = ckb-vm-bench-scripts
 	url = https://github.com/nervosnetwork/ckb-vm-bench-scripts
+[submodule "riscv-arch-test"]
+	path = riscv-arch-test
+	url = https://github.com/riscv-non-isa/riscv-arch-test.git

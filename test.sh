@@ -91,8 +91,8 @@ then
     done
 fi
 
-# Test CKB VM with ckb-vm-compliance
-cd "$TOP/ckb-vm-compliance"
+# Test CKB VM with ckb-vm-arch-test
+cd "$TOP/ckb-vm-arch-test"
 
 if [ "$RUNTESTS" -eq "1" ]
 then

@@ -1,10 +1,6 @@
 [submodule "riscv-tests"]
 	path = riscv-tests
 	url = https://github.com/nervosnetwork/riscv-tests
-[submodule "riscv-compliance"]
-	path = riscv-compliance
-	url = https://github.com/nervosnetwork/riscv-compliance
-	branch = update
 [submodule "ckb-vm-bench-scripts"]
 	path = ckb-vm-bench-scripts
 	url = https://github.com/nervosnetwork/ckb-vm-bench-scripts

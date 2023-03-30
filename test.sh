@@ -91,8 +91,8 @@ then
     done
 fi
 
-# Test CKB VM with riscv-compliance
-cd "$TOP/riscv-compliance"
+# Test CKB VM with ckb-vm-compliance
+cd "$TOP/ckb-vm-compliance"
 
 if [ "$RUNTESTS" -eq "1" ]
 then
@@ -103,12 +103,15 @@ fi
 
 # TODO: more targets
 mkdir -p work
+
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET
+find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=B TARGET_SIM="$INTERPRETER64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=I TARGET_SIM="$ASM64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=M TARGET_SIM="$ASM64" $COMPLIANCE_TARGET
 find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=C TARGET_SIM="$ASM64" $COMPLIANCE_TARGET
+find work -name "*.log" -delete && make RISCV_TARGET=ckb-vm XLEN=64 RISCV_DEVICE=B TARGET_SIM="$ASM64" $COMPLIANCE_TARGET
 
 # Even though ckb-vm-bench-scripts are mainly used for benchmarks, they also
 # contains sophisticated scripts which make good tests

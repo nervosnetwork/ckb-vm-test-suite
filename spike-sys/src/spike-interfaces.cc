@@ -49,7 +49,7 @@ uint64_t spike_new_processor(uint64_t mem_size) {
     mem = NULL;
   }
 
-  isa_parser_t isa("RV64GC", "MSU");
+  isa_parser_t isa("RV64GC_ZBA_ZBB_ZBC_ZBS", "MSU");
   processor_t *proc =
       new processor_t(isa, "", mem, 0, false, NULL, std::cerr);
   reg_t val = proc->state.sstatus->read();

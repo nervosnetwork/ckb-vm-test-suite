@@ -1,5 +1,17 @@
 set -ex
 
+if ! command -v clang &> /dev/null
+then
+    echo "clang could not be found"
+    exit
+fi
+
+if ! command -v clang++ &> /dev/null
+then
+    echo "clang++ could not be found"
+    exit
+fi
+
 if [ ! -d ./riscv-isa-sim ]; then
     git clone https://github.com/riscv-software-src/riscv-isa-sim
     cd riscv-isa-sim

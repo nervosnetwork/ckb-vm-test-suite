@@ -1,12 +1,12 @@
 set -ex
 
-if ! command -v clang &> /dev/null
+if ! command -v clang > /dev/null
 then
     echo "clang could not be found"
     exit
 fi
 
-if ! command -v clang++ &> /dev/null
+if ! command -v clang++ > /dev/null
 then
     echo "clang++ could not be found"
     exit

@@ -14,3 +14,9 @@ $ chmod +x llvm.sh
 $ sudo ./llvm.sh 16 all
 $ rm llvm.sh
 ```
+
+How to publish it to crates.io
+
+```sh
+$ cargo publish --no-verify
+```

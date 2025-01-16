@@ -3,7 +3,7 @@ use ckb_vm::{
         asm::{AsmCoreMachine, AsmMachine},
         DefaultMachineBuilder, VERSION2,
     },
-    Bytes, ISA_A, ISA_B, ISA_IMC, ISA_MOP,
+    ISA_A, ISA_B, ISA_IMC, ISA_MOP,
 };
 use std::env;
 use std::process::exit;
@@ -11,7 +11,7 @@ use std::process::exit;
 fn main() {
     let args: Vec<String> = env::args().skip(1).collect();
     let code = std::fs::read(args[0].clone()).unwrap().into();
-    let args: Vec<Bytes> = args.into_iter().map(|a| a.into()).collect();
+    let args = args.into_iter().map(|a| Ok(a.into()));
 
     let asm_core = AsmCoreMachine::new(
         ISA_IMC | ISA_A | ISA_B | ISA_MOP,
@@ -20,7 +20,7 @@ fn main() {
     );
     let core = DefaultMachineBuilder::new(asm_core).build();
     let mut machine = AsmMachine::new(core);
-    machine.load_program(&code, &args).unwrap();
+    machine.load_program(&code, args).unwrap();
     let result = machine.run();
     if result != Ok(0) {
         println!("Error result: {:?}", result);

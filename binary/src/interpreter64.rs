@@ -1,6 +1,6 @@
 use ckb_vm::{
     machine::{
-        trace::TraceMachine, DefaultCoreMachine, DefaultMachineBuilder, DefaultMachineRunner,
+        trace::TraceMachine, DefaultCoreMachine, DefaultMachineRunner, RustDefaultMachineBuilder,
         SupportMachine, VERSION2,
     },
     memory::wxorx::WXorXMemory,
@@ -19,7 +19,7 @@ fn main() {
         VERSION2,
         u64::MAX,
     );
-    let mut machine = TraceMachine::new(DefaultMachineBuilder::new(core_machine).build());
+    let mut machine = TraceMachine::new(RustDefaultMachineBuilder::new(core_machine).build());
     machine.load_program(&code, args).unwrap();
     let result = machine.run();
     if result != Ok(0) {

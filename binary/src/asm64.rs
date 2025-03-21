@@ -1,7 +1,7 @@
 use ckb_vm::{
     machine::{
-        asm::{AsmCoreMachine, AsmMachine},
-        DefaultMachineBuilder, DefaultMachineRunner, SupportMachine, VERSION2,
+        asm::{AsmCoreMachine, AsmDefaultMachineBuilder, AsmMachine},
+        DefaultMachineRunner, SupportMachine, VERSION2,
     },
     ISA_A, ISA_B, ISA_IMC, ISA_MOP,
 };
@@ -13,12 +13,12 @@ fn main() {
     let code = std::fs::read(args[0].clone()).unwrap().into();
     let args = args.into_iter().map(|a| Ok(a.into()));
 
-    let asm_core = <Box<AsmCoreMachine> as SupportMachine>::new(
+    let asm_core = <AsmCoreMachine as SupportMachine>::new(
         ISA_IMC | ISA_A | ISA_B | ISA_MOP,
         VERSION2,
         u64::max_value(),
     );
-    let core = DefaultMachineBuilder::new(asm_core).build();
+    let core = AsmDefaultMachineBuilder::new(asm_core).build();
     let mut machine = AsmMachine::new(core);
     machine.load_program(&code, args).unwrap();
     let result = machine.run();

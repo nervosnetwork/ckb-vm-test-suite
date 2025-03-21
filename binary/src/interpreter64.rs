@@ -1,5 +1,8 @@
 use ckb_vm::{
-    machine::{trace::TraceMachine, DefaultCoreMachine, DefaultMachineBuilder, VERSION2},
+    machine::{
+        trace::TraceMachine, DefaultCoreMachine, DefaultMachineBuilder, DefaultMachineRunner,
+        SupportMachine, VERSION2,
+    },
     memory::wxorx::WXorXMemory,
     SparseMemory, ISA_A, ISA_B, ISA_IMC, ISA_MOP,
 };
